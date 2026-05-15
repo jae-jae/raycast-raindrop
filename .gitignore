@@ -2,5 +2,6 @@ node_modules
 dist
 .DS_Store
 raycast-env.d.ts
+package-lock.json
 *.js
 !src/**

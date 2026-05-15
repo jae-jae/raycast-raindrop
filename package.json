@@ -78,11 +78,11 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "build": "ray build",
-    "dev": "ray develop",
-    "fix-lint": "ray lint --fix",
-    "lint": "ray lint",
+    "build": "bunx ray build",
+    "dev": "bunx ray develop",
+    "fix-lint": "bunx ray lint --fix",
+    "lint": "bunx ray lint",
     "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and revisit the \\`package.json\\` file to make sure it points to the correct npm package.\\n\\nIf you wanted to publish it to the Raycast Store instead, use the \\`npm run publish\\` command instead.\\n\\n\" && exit 1",
-    "publish": "npx @raycast/api@latest publish"
+    "publish": "bunx @raycast/api@latest publish"
   }
 }
