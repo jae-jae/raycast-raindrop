@@ -37,7 +37,7 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 /** Search bookmarks across all collections */
 export async function searchBookmarks(keyword: string): Promise<SearchResponse> {
   return request<SearchResponse>(
-    `/raindrops/0?sort=score&search=${encodeURIComponent(keyword)}&perpage=50`,
+    `/raindrops/0?sort=score&search=${keyword}`,
   );
 }
 
