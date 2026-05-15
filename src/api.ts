@@ -17,11 +17,7 @@ function getToken(): string {
 
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const token = getToken();
-  const url = `${BASE_URL}${endpoint}`;
-
-  console.log(`[raindrop] ${options?.method || "GET"} ${url}`);
-
-  const response = await fetch(url, {
+  const response = await fetch(`${BASE_URL}${endpoint}`, {
     redirect: "follow",
     ...options,
     headers: {
@@ -36,9 +32,7 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     throw new Error(`Raindrop API error (${response.status}): ${body}`);
   }
 
-  const data = (await response.json()) as T;
-  console.log(`[raindrop] response ok, items: ${JSON.stringify((data as Record<string, unknown>).items ? ((data as Record<string, unknown>).items as unknown[]).length : "n/a")}`);
-  return data;
+  return response.json() as Promise<T>;
 }
 
 /** Search bookmarks across all collections */
