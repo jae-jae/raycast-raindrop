@@ -36,9 +36,8 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
 /** Search bookmarks across all collections */
 export async function searchBookmarks(keyword: string): Promise<SearchResponse> {
-  return request<SearchResponse>(
-    `/raindrops/0?sort=score&search=${keyword}`,
-  );
+  const params = new URLSearchParams({ sort: "score", search: keyword });
+  return request<SearchResponse>(`/raindrops/0?${params.toString()}`);
 }
 
 /** Get all raindrops in a specific collection */
