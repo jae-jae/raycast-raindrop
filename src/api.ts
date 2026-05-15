@@ -36,8 +36,10 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 
 /** Search bookmarks across all collections */
 export async function searchBookmarks(keyword: string): Promise<SearchResponse> {
-  const params = new URLSearchParams({ sort: "score", search: keyword });
-  return request<SearchResponse>(`/raindrops/0?${params.toString()}`);
+  // Only encode spaces to %20 — Raindrop API expects raw Chinese/special chars.
+  // Node.js fetch() requires valid URLs (no bare spaces), unlike browser fetch.
+  const encoded = keyword.replace(/ /g, "%20");
+  return request<SearchResponse>(`/raindrops/0?sort=score&search=${encoded}`);
 }
 
 /** Get all raindrops in a specific collection */
