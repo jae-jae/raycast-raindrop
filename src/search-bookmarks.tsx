@@ -128,7 +128,7 @@ export default function SearchBookmarks() {
       onSearchTextChange={setSearchText}
       searchBarPlaceholder="Search Raindrop.io bookmarks…"
       throttle
-      filtering={{ keepSectionOrder: true }}
+      filtering={false}
     >
       {bookmarks.length === 0 && !isLoading ? (
         <List.EmptyView

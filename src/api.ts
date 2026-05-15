@@ -17,7 +17,12 @@ function getToken(): string {
 
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const token = getToken();
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const url = `${BASE_URL}${endpoint}`;
+
+  console.log(`[raindrop] ${options?.method || "GET"} ${url}`);
+
+  const response = await fetch(url, {
+    redirect: "follow",
     ...options,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -31,15 +36,16 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
     throw new Error(`Raindrop API error (${response.status}): ${body}`);
   }
 
-  return response.json() as Promise<T>;
+  const data = (await response.json()) as T;
+  console.log(`[raindrop] response ok, items: ${JSON.stringify((data as Record<string, unknown>).items ? ((data as Record<string, unknown>).items as unknown[]).length : "n/a")}`);
+  return data;
 }
 
 /** Search bookmarks across all collections */
 export async function searchBookmarks(keyword: string): Promise<SearchResponse> {
-  // Only encode spaces to %20 — Raindrop API expects raw Chinese/special chars.
-  // Node.js fetch() requires valid URLs (no bare spaces), unlike browser fetch.
-  const encoded = keyword.replace(/ /g, "%20");
-  return request<SearchResponse>(`/raindrops/0?sort=score&search=${encoded}`);
+  return request<SearchResponse>(
+    `/raindrops/0?sort=score&search=${keyword.replace(/ /g, "%20")}`,
+  );
 }
 
 /** Get all raindrops in a specific collection */
