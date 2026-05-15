@@ -16,7 +16,9 @@ export async function loadRecentBookmarks(): Promise<RaindropBookmark[]> {
 }
 
 /** Push a bookmark to the MRU cache (dedup + cap at MAX_CACHE_SIZE) */
-export async function pushRecentBookmark(bookmark: RaindropBookmark): Promise<void> {
+export async function pushRecentBookmark(
+  bookmark: RaindropBookmark,
+): Promise<void> {
   const current = await loadRecentBookmarks();
   const filtered = current.filter((b) => b._id !== bookmark._id);
   filtered.unshift(bookmark);

@@ -1,12 +1,12 @@
 import { showToast, Toast } from "@raycast/api";
-import { searchBookmarks, getCollections, createBookmark } from "./api";
 
 /**
  * Validate API token by making a simple API call.
- * Call this from search-bookmarks or browse-collections on first load.
  */
 export async function validateToken(): Promise<boolean> {
   try {
+    // Dynamically import to avoid circular deps
+    const { getCollections } = await import("./api");
     const res = await getCollections();
     return res.result;
   } catch {

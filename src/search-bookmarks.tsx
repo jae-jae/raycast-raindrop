@@ -23,10 +23,14 @@ function useDebounce(value: string, delay: number): string {
 }
 
 // Lightweight fuzzy search over cached bookmarks (no external dependency)
-function fuzzyMatch(bookmarks: RaindropBookmark[], query: string): RaindropBookmark[] {
+function fuzzyMatch(
+  bookmarks: RaindropBookmark[],
+  query: string,
+): RaindropBookmark[] {
   const q = query.toLowerCase();
   return bookmarks.filter((b) => {
-    const hay = `${b.title} ${b.note} ${b.excerpt} ${b.link} ${b.tags.join(" ")}`.toLowerCase();
+    const hay =
+      `${b.title} ${b.note} ${b.excerpt} ${b.link} ${b.tags.join(" ")}`.toLowerCase();
     // Substring match + character-by-character fuzzy
     if (hay.includes(q)) return true;
     let idx = 0;
@@ -40,7 +44,10 @@ function fuzzyMatch(bookmarks: RaindropBookmark[], query: string): RaindropBookm
 }
 
 // Reorder results: recently-used items float to top
-function sortByMRU(items: RaindropBookmark[], recentIds: Set<number>): RaindropBookmark[] {
+function sortByMRU(
+  items: RaindropBookmark[],
+  recentIds: Set<number>,
+): RaindropBookmark[] {
   const top = items.filter((b) => recentIds.has(b._id));
   const rest = items.filter((b) => !recentIds.has(b._id));
   return [...top, ...rest];
@@ -103,7 +110,11 @@ export default function SearchBookmarks() {
         if (cancelled) return;
         // Keep local results on API error — don't disrupt user
         if (localResults.length === 0) {
-          showToast({ style: Toast.Style.Failure, title: "Error", message: String(err) });
+          showToast({
+            style: Toast.Style.Failure,
+            title: "Error",
+            message: String(err),
+          });
         }
       })
       .finally(() => {
@@ -118,7 +129,10 @@ export default function SearchBookmarks() {
   const handleOpen = useCallback(async (bookmark: RaindropBookmark) => {
     // Update MRU cache
     await pushRecentBookmark(bookmark);
-    recentRef.current = [bookmark, ...recentRef.current.filter((b) => b._id !== bookmark._id)].slice(0, 100);
+    recentRef.current = [
+      bookmark,
+      ...recentRef.current.filter((b) => b._id !== bookmark._id),
+    ].slice(0, 100);
     recentIdsRef.current = new Set(recentRef.current.map((b) => b._id));
   }, []);
 
@@ -133,7 +147,11 @@ export default function SearchBookmarks() {
       {bookmarks.length === 0 && !isLoading ? (
         <List.EmptyView
           title="No Bookmarks Found"
-          description={searchText ? "Try a different search term" : "Your recent bookmarks will appear here"}
+          description={
+            searchText
+              ? "Try a different search term"
+              : "Your recent bookmarks will appear here"
+          }
           icon={Icon.Bookmark}
         />
       ) : (
@@ -160,7 +178,9 @@ export default function SearchBookmarks() {
                   icon={Icon.Globe}
                   onAction={async () => {
                     await handleOpen(bookmark);
-                    await import("@raycast/api").then((api) => api.open(bookmark.link));
+                    await import("@raycast/api").then((api) =>
+                      api.open(bookmark.link),
+                    );
                   }}
                 />
                 <Action
@@ -171,7 +191,9 @@ export default function SearchBookmarks() {
                 <Action
                   title="Copy Title & URL"
                   icon={Icon.Clipboard}
-                  onAction={() => Clipboard.copy(`${bookmark.title}\n${bookmark.link}`)}
+                  onAction={() =>
+                    Clipboard.copy(`${bookmark.title}\n${bookmark.link}`)
+                  }
                 />
                 <Action.OpenInBrowser
                   title="Open in Raindrop"

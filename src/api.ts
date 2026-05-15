@@ -36,7 +36,9 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 }
 
 /** Search bookmarks across all collections */
-export async function searchBookmarks(keyword: string): Promise<SearchResponse> {
+export async function searchBookmarks(
+  keyword: string,
+): Promise<SearchResponse> {
   return request<SearchResponse>(
     `/raindrops/0?sort=score&search=${keyword.replace(/ /g, "%20")}`,
   );
@@ -58,7 +60,9 @@ export async function getCollections(): Promise<CollectionsResponse> {
 }
 
 /** Get child collections for a parent */
-export async function getChildCollections(parentId: number): Promise<CollectionsResponse> {
+export async function getChildCollections(
+  parentId: number,
+): Promise<CollectionsResponse> {
   return request<CollectionsResponse>(`/collections/childrens/${parentId}`);
 }
 
@@ -73,8 +77,12 @@ export async function createBookmark(
 }
 
 /** Get a single bookmark */
-export async function getBookmark(id: number): Promise<{ result: boolean; item: RaindropBookmark }> {
-  return request<{ result: boolean; item: RaindropBookmark }>(`/raindrop/${id}`);
+export async function getBookmark(
+  id: number,
+): Promise<{ result: boolean; item: RaindropBookmark }> {
+  return request<{ result: boolean; item: RaindropBookmark }>(
+    `/raindrop/${id}`,
+  );
 }
 
 /** Remove a bookmark */

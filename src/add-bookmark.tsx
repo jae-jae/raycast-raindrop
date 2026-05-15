@@ -98,7 +98,10 @@ export default function AddBookmark() {
       });
 
       if (res.result) {
-        await showToast({ style: Toast.Style.Success, title: "Bookmark saved!" });
+        await showToast({
+          style: Toast.Style.Success,
+          title: "Bookmark saved!",
+        });
         // Reset form
         setUrl("");
         setTitle("");
@@ -112,7 +115,11 @@ export default function AddBookmark() {
         });
       }
     } catch (err) {
-      await showToast({ style: Toast.Style.Failure, title: "Error", message: String(err) });
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Error",
+        message: String(err),
+      });
     } finally {
       setIsLoading(false);
     }
@@ -123,7 +130,11 @@ export default function AddBookmark() {
       isLoading={isLoading}
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Save Bookmark" icon={Icon.Plus} onSubmit={handleSubmit} />
+          <Action.SubmitForm
+            title="Save Bookmark"
+            icon={Icon.Plus}
+            onSubmit={handleSubmit}
+          />
         </ActionPanel>
       }
     >
@@ -155,10 +166,19 @@ export default function AddBookmark() {
         value={tags}
         onChange={setTags}
       />
-      <Form.Dropdown id="collection" title="Collection" value={collectionId} onChange={setCollectionId}>
+      <Form.Dropdown
+        id="collection"
+        title="Collection"
+        value={collectionId}
+        onChange={setCollectionId}
+      >
         <Form.Dropdown.Item value="0" title="All (Unsorted)" />
         {collections.map((col) => (
-          <Form.Dropdown.Item key={col._id} value={String(col._id)} title={col.title} />
+          <Form.Dropdown.Item
+            key={col._id}
+            value={String(col._id)}
+            title={col.title}
+          />
         ))}
       </Form.Dropdown>
     </Form>
